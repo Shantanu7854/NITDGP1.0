@@ -13,35 +13,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'upload'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
-@app.route('/upload', methods=['POST'])
-def upload_image_and_prompt():
-    image_file = request.files['file']
-    if image_file.filename == '':
-        return jsonify({'error': 'No selected image'}), 400
-    
-    if image_file.filename == '':
-        return jsonify({'error': 'No selected image'}), 400
 
-    image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
-    image_file.save(image_path)
-
-system_prompt = f"""
-You are a general physician and you will help people with queries about their health.\
-You will ask for any problems and symptoms.\
-You can also take a look at their x-ray,CT and MRI scans so you should inform the user if you need to get proper diagnosis.\
-Answer the customer in a friendly tone.
-You will keep gathering more information by asking if are any more symptoms they are experincing.\
-Don't write long senstences.
-Lastly you will create a list of symptoms.
-You will also recommend OTC drugs permmitted by Indian goverment if required with popular brand names such as calpol 650 for fever.
-Use the following format:
-<response to user>
-
-when the user says they have told all they want The response to user also includes probable prognosis based on the symptoms.
-Use the following format:
-Symptoms: <symptoms provided by the user in a list>
-<response to user>
-"""
 
 def classify_image(image_path):
 
@@ -67,47 +39,77 @@ def classify_image(image_path):
     confidence_score = prediction[0][index]
 
     # return class_name
-    return class_name[2:].strip('\n')
+    return class_name[2:-1]
 
-@app.route('/chat_with_gpt', methods=['POST'])
-def chat_with_gpt(prompt):
-    image_file = request.files['file']
-    prompt = request.
-    if image_file.filename == '':
-        return jsonify({'error': 'No selected image'}), 400
-    else :
-        promt1 = 
-    if image_file.filename == '':
-        return jsonify({'error': 'No selected image'}), 400
 
-    image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
-    image_file.save(image_path)
-
-    # Set up the API key from OpenAI
-    openai.api_key = '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'
-
-    # Start the chat session with the initial system prompt
-    chat_log.append({'role': 'system', 'content': prompt})
 
     # Function to send a message to the chatbot and get a response
-    def send_message(message):
-        # Append the user's message to the chat log
-        chat_log.append({'role': 'user', 'content': message})
+def send_message(chat_log, message, prompt_for_image=""):
+    # Append the user's message to the chat log
+    openai.api_key = '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'
+    
 
-        # Get the response from the chatbot using the current chat log for context
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=chat_log
-        )
+    system_prompt = f"""
+    You are a general physician and you will help people with queries about their health.\
+    You will ask for any problems and symptoms.\
+    You can also take a look at their x-ray,CT and MRI scans so you should inform the user if you need to get proper diagnosis.\
+    Answer the customer in a friendly tone.
+    You will keep gathering more information by asking if are any more symptoms they are experincing.\
+    Don't write long senstences.
+    Lastly you will create a list of symptoms.
+    You will also recommend OTC drugs permmitted by Indian goverment if required with popular brand names such as calpol 650 for fever.
+    {prompt_for_image}
+    Use the following format:
+    <response to user>
 
-        # Append the chatbot's response to the chat log
-        chat_log.append({'role': 'assistant', 'content': response.choices[0].message['content']})
+    when the user says they have told all they want The response to user also includes probable prognosis based on the symptoms.
+    Use the following format:
+    Symptoms: <symptoms provided by the user in a list>
+    <response to user>
+    """
 
-        # Return the chatbot's response content
-        return response.choices[0].message['content']
+    chat_log.append({'role': 'user', 'content': message})
 
-    # Return the send_message function with the chat log bound to it
-    return send_message
+    chat_log.append({'role': 'system', 'content': system_prompt})
+
+    # Get the response from the chatbot using the current chat log for context
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=chat_log
+    )
+
+    # Append the chatbot's response to the chat log
+    chat_log.append({'role': 'assistant', 'content': response.choices[0].message['content']})
+
+    # Return the chatbot's response content
+    return response.choices[0].message['content']
+
+
+
+
+@app.route('/upload', methods=['POST'])
+def chat_with_gpt():
+
+
+    image_file = request.files['file']
+
+    prompt = request.form.get("prompt")
+
+    if image_file.filename == '':
+        response = send_message(chat_log, prompt)
+        return jsonify(response)
+        
+    else:
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
+        image_file.save(image_path)
+        z = classify_image(image_path)
+        image_prompt = f"from image uploaded, we found that you have {z}"
+        response = send_message(chat_log, prompt, image_prompt)
+        return jsonify(response)
+
+        
+
+
 
 
 if __name__ == '__main__':
