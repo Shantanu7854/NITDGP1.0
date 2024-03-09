@@ -27,12 +27,15 @@
 }
 
 .chatbot-tabs {
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 50px;
+  margin-bottom: 150px;
   width: 20%;
   background: linear-gradient(to left, rgba(130, 20, 157, 0.8), rgba(47, 13, 57, 0.8));
   padding: 20px;
   box-shadow: inset 0 0 10px rgba(68, 6, 92, 0.2); /* Adjust the color and opacity to match the background */
+  background-blend-mode: screen;
+  border-radius: 15px;
+  margin-left: 30px;
 }
 
 
@@ -84,7 +87,6 @@
 }
 
 .chatbot-input {
-  display: flex;
   padding: 20px;
 }
 

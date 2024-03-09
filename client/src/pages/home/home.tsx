@@ -49,10 +49,10 @@ const Chatbot: React.FC = () => {
         </div>
       </div>
       <div className="content">
-        <div className="chatbot-tabs">
+        <div className="chatbot-tabs" >
           
           <img src={botImage} alt="Bot Image" />
-          <h1>Your Health Buddy</h1>
+          <h1 className="ml-10 text-2xl">Your Health Buddy</h1>
         </div>
 
         <div className="chatbot-messages">
@@ -63,7 +63,7 @@ const Chatbot: React.FC = () => {
           ))}
         </div>
       </div>
-      <form onSubmit={handleMessageSubmit} className="chatbot-input">
+      <form onSubmit={handleMessageSubmit} className="chatbot-input flex">
         <input
           type="text" className='prompt'
           value={inputValue}
