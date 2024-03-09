@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import Logo from "@/components/custom/logo";
 import './home.css'; // Import CSS file for styling
+import botImage from '@/assets/bot_image.png';
+
 
 interface Message {
   id: number;
@@ -13,6 +16,7 @@ const Chatbot: React.FC = () => {
     { id: 1, text: "Hello! How can I assist you today?" }
   ]);
   const [inputValue, setInputValue] = useState<string>('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const handleMessageSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +28,9 @@ const Chatbot: React.FC = () => {
       { id: messages.length + 1, text: inputValue, user: true }
     ]);
 
-    // Clear the input field
+    // Clear the input field and selected image
     setInputValue('');
+    setSelectedImage(null);
     
     // Simulate bot response after 1 second
     setTimeout(() => {
@@ -39,16 +44,17 @@ const Chatbot: React.FC = () => {
   return (
     <div className="chatbot">
       <div className="header">
-        <h1>MediMind</h1>
+        <div className="inline-block">
+          <Logo />
+        </div>
       </div>
       <div className="content">
         <div className="chatbot-tabs">
-          {/* Tabs for previous chats */}
-          {/* Replace this with your tabs component */}
-          <div className="tab">Chat 1</div>
-          <div className="tab">Chat 2</div>
-          <div className="tab">Chat 3</div>
+          
+          <img src={botImage} alt="Bot Image" />
+          <h1>Your Health Buddy</h1>
         </div>
+
         <div className="chatbot-messages">
           {messages.map(message => (
             <div key={message.id} className={`message ${message.user ? 'user' : 'bot'}`}>
@@ -59,10 +65,19 @@ const Chatbot: React.FC = () => {
       </div>
       <form onSubmit={handleMessageSubmit} className="chatbot-input">
         <input
-          type="text"
+          type="text" className='prompt'
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Type your message..."
+          placeholder="Type your message..." 
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files && e.target.files.length > 0) {
+              setSelectedImage(e.target.files[0]);
+            }
+          }}
         />
         <button type="submit">Send</button>
       </form>

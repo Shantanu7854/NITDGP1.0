@@ -7,10 +7,18 @@
 }
 
 .header {
-  background-color: #007bff;
+  background: linear-gradient(to right, #16283b, #007bff); /* Gradient background */
   color: #fff;
   padding: 20px;
   text-align: center;
+}
+/* .botimage {
+  background: radial-gradient(circle, #16283b, #007bff);
+} */
+
+.logo-container {
+  width: 50px; 
+  margin: 0 auto; 
 }
 
 .content {
@@ -19,20 +27,39 @@
 }
 
 .chatbot-tabs {
+  margin-top: 100px;
+  margin-bottom: 100px;
   width: 20%;
-  background-color: #31369b;
+  background: linear-gradient(to left, rgba(130, 20, 157, 0.8), rgba(47, 13, 57, 0.8));
   padding: 20px;
+  box-shadow: inset 0 0 10px rgba(68, 6, 92, 0.2); /* Adjust the color and opacity to match the background */
 }
+
+
+
 
 .tab {
   margin-bottom: 10px;
   cursor: pointer;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to right, #007bff, #044283); /* Gradient background */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  text-align: center; /* Center align the text */
+}
+
+.tab:hover {
+  background: linear-gradient(to right, #0056b3, #0d3968); /* Gradient background */
 }
 
 .chatbot-messages {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
+  
 }
 
 .message {
@@ -61,16 +88,27 @@
   padding: 20px;
 }
 
-.chatbot-input input {
-  flex: 1;
+.chatbot-input input[type="text"] {
+  flex: 3; /* Increase the width of the text input box */
+  margin-left: 100px;
+  margin-right: 10px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px 0 0 6px;
   outline: none;
+  color: #333; /* Change the color of the text */
+}
+
+.chatbot-input input[type="file"] {
+  flex: 1; /* Decrease the width of the file uploading box */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 0 6px 6px 0;
+  outline: none;
 }
 
 .chatbot-input button {
-  background-color: #007bff;
+  background: linear-gradient(to right, #0d3968, #0056b3); /* Gradient background */
   color: #fff;
   border: none;
   border-radius: 0 6px 6px 0;
@@ -80,5 +118,5 @@
 }
 
 .chatbot-input button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(to right, #0056b3, #0d3968); /* Gradient background */
 }
