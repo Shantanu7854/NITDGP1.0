@@ -1,7 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
   :root {
     --background: 240 10% 3.9%;
@@ -62,6 +62,14 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
   }
+}
+
+.logo {
+  font-family: "Great Vibes", cursive;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: wheat;
+  font-size: 1.6rem;
 }
 
 @layer base {

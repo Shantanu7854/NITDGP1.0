@@ -1,3 +1,4 @@
+import Logo from "@/components/custom/logo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,14 +21,21 @@ export default function Authpage() {
   };
   const loginRef = { email: useRef<any>(), password: useRef<any>() };
   return (
-    <div className="w-full flex items-center justify-center h-[100dvh]">
+    <div className="w-full flex flex-col items-center justify-center h-[100dvh]">
+      <div className="">
+        <Logo />
+      </div>
       <Tabs defaultValue="account" className="w-[400px]">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="account">Signup</TabsTrigger>
-          <TabsTrigger value="password">Login</TabsTrigger>
+        <TabsList className="grid rounded-[20px] w-full grid-cols-2">
+          <TabsTrigger className="rounded-[20px]" value="account">
+            Signup
+          </TabsTrigger>
+          <TabsTrigger className="rounded-[20px]" value="password">
+            Login
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="account">
-          <Card>
+          <Card className="rounded-[10px] shadow-md border-slate-600 mt-4">
             <CardHeader>
               <CardTitle>Signup</CardTitle>
               <CardDescription>
@@ -63,7 +71,7 @@ export default function Authpage() {
           </Card>
         </TabsContent>
         <TabsContent value="password">
-          <Card>
+          <Card className="mt-4 border-slate-600 rounded-[10px]">
             <CardHeader>
               <CardTitle>Login</CardTitle>
             </CardHeader>
@@ -87,7 +95,7 @@ export default function Authpage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button>Login</Button>
+              <Button className=" rounded-lg">Login</Button>
             </CardFooter>
           </Card>
         </TabsContent>
