@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import AuthPage from "./pages/auth";
-import Homepage from "./pages/home";
-import useToken from "./hooks/useToken";
+import Homepage from "./pages/home/home";
 
 function App() {
   // const [token] = useToken();
