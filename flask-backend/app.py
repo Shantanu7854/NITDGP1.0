@@ -46,7 +46,7 @@ def classify_image(image_path):
     # Function to send a message to the chatbot and get a response
 def send_message(chat_log, message, prompt_for_image=""):
     # Append the user's message to the chat log
-    openai.api_key = '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'
+    openai.api_key = 'OPEN_API_KEY'
     
 
     system_prompt = f"""
