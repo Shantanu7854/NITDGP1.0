@@ -4,11 +4,14 @@ from keras.models import load_model
 from PIL import Image, ImageOps 
 import numpy as np
 import os
+from flask_cors import CORS
 
 import openai
 chat_log=[]
 
 app = Flask(__name__)
+
+CORS(app, resources={r"*": {"origins": "*"}})
 
 app.config['UPLOAD_FOLDER'] = 'upload'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
@@ -46,7 +49,7 @@ def classify_image(image_path):
     # Function to send a message to the chatbot and get a response
 def send_message(chat_log, message, prompt_for_image=""):
     # Append the user's message to the chat log
-    openai.api_key = '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'
+    openai.api_key = ''
     
 
     system_prompt = f"""
@@ -85,21 +88,30 @@ def send_message(chat_log, message, prompt_for_image=""):
     return response.choices[0].message['content']
 
 
+@app.route('/upload-dummy', methods=['POST'])
+def upload():
+    prompt = request.form.get("prompt") 
+    if 'file' not in request.files:
+        return jsonify({"test":"success"})
+    else:
+        image_file = request.files['file']
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
+        # image uploaded in upload folder
+        
+        image_file.save(image_path)
+        return jsonify({"hdedybe":"dwuhdyuw"})
 
 
 @app.route('/upload', methods=['POST'])
 def chat_with_gpt():
-
-
-    image_file = request.files['file']
-
-    prompt = request.form.get("prompt")
-
-    if image_file.filename == '':
+    prompt = request.form.get("prompt") 
+    if 'file' not in request.files:
         response = send_message(chat_log, prompt)
         return jsonify(response)
+
         
     else:
+        image_file = request.files['file']
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
         image_file.save(image_path)
         z = classify_image(image_path)

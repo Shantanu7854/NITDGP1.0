@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Logo from "@/components/custom/logo";
 import './home.css'; // Import CSS file for styling
 import botImage from '@/assets/bot_image.png';
-
+import axios from 'axios';
 
 interface Message {
   id: number;
@@ -18,6 +18,34 @@ const Chatbot: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
+  const submit = async()=>{
+      try {
+        const upload = async () => {
+          try {
+      
+            const formData: any = new FormData();
+            formData.append("file", selectedImage);
+            formData.append("prompt", "dywgdywgw");
+            const { data } = await axios.post(
+              "http://127.0.0.1:5000/upload-dummy",
+              formData
+            );
+            console.log(data);
+            setTimeout(() => {
+              setMessages([
+                ...messages,
+                { id: messages.length + 2, text: "I'm just a simple chatbot. I don't have real intelligence :)", bot: true }
+              ]);
+            }, 1000);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
   const handleMessageSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
@@ -31,14 +59,9 @@ const Chatbot: React.FC = () => {
     // Clear the input field and selected image
     setInputValue('');
     setSelectedImage(null);
-    
+    submit();
     // Simulate bot response after 1 second
-    setTimeout(() => {
-      setMessages([
-        ...messages,
-        { id: messages.length + 2, text: "I'm just a simple chatbot. I don't have real intelligence :)", bot: true }
-      ]);
-    }, 1000);
+    
   };
 
   return (
